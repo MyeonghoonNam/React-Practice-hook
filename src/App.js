@@ -1,8 +1,24 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import UserList from "./UserList";
+import CreateUser from "./CreateUser";
 
 function App() {
-  const users = [
+  const [inputs, setInputs] = useState({
+    name:'',
+    email:''
+  });
+
+  const {name, email} = inputs;
+
+  const onChange = (e) => {
+    const {name, value} = e.target;
+    setInputs({
+      ...inputs,
+      [name]:value
+    })
+  }
+
+  const [users, setUsers] = useState([
     {
       id:'1',
       name:"남명훈",
@@ -18,17 +34,36 @@ function App() {
       name:"이효용",
       email:"구글"
     }
-  ]
+  ]);
 
   const nextId = useRef(4);
   const onCreate = () => {
-    // 추후 구현
+    const user = {
+      id:nextId,
+      name:name,
+      email:email
+    }
 
+    setUsers(users.concat(user));
+
+    setInputs({
+      name:'',
+      email:''
+    })
+    
     nextId.current += 1;
   }
 
   return (
-    <UserList users={users}/>
+    <>
+      <CreateUser
+        name={name}
+        email={email}
+        onChange={onChange}
+        onCreate={onCreate}
+      />
+      <UserList users={users}/>
+    </>
   );
 }
 
