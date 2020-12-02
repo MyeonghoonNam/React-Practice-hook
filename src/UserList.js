@@ -6,25 +6,7 @@ function User({user}){
   )
 }
 
-function UserList(){
-  const users = [
-    {
-      id:'1',
-      name:"남명훈",
-      email:"네이버"
-    },
-    {
-      id:'2',
-      name:"김민재",
-      email:"다음"
-    },
-    {
-      id:'3',
-      name:"이효용",
-      email:"구글"
-    }
-  ]
-
+function UserList({users}){
   return(
     <div>
       {users.map( user => (
