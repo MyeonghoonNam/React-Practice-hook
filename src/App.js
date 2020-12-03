@@ -1,7 +1,7 @@
 import React, {useRef, useReducer, useMemo, useCallback} from 'react';
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
-import useInputs from "./hooks/useInputs_reducer";
+import useInputs from "./hooks/useInputs";
 
 function countActiveUsers(users){
   console.log("활성 사용자 수 세는중...");
@@ -58,8 +58,10 @@ function reducer(state, action){
   }
 }
 
+export const UserDispatch = React.createContext(null);
+
 function App() {
-  const [{name, email}, onChange, reset] = useInputs({
+  const [{name, email}, onChange, onReset] = useInputs({
     name:'',
     email:''
   });
@@ -78,41 +80,23 @@ function App() {
       }
     });
     
-    reset();
+    onReset();
     nextId.current += 1;
-  }, [name, email])
+  }, [name, email, onReset]);
 
-  const onToggle = useCallback(id => {
-    dispatch({
-      type: 'TOGGLE_USER',
-      id
-    });
-  }, []);
-
-  const onRemove = useCallback(id => {
-    dispatch({
-      type: 'REMOVE_USER',
-      id
-    });
-  }, []);
-
-  const count = useMemo( ()=> countActiveUsers(users), [users]);
+  const count = useMemo(() => countActiveUsers(users), [users]);
 
   return (
-    <>
+    <UserDispatch.Provider value={dispatch}>
       <CreateUser
         name={name}
         email={email}
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList
-        users={users}
-        onToggle={onToggle}
-        onRemove={onRemove}
-      />
+      <UserList users={users}/>
       <div>활성사용자수 : {count}</div>
-    </>
+    </UserDispatch.Provider>
   );
 }
 
