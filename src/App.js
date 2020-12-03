@@ -22,17 +22,20 @@ function App() {
     {
       id:'1',
       name:"남명훈",
-      email:"네이버"
+      email:"네이버",
+      active:"true"
     },
     {
       id:'2',
       name:"김민재",
-      email:"다음"
+      email:"다음",
+      active:"false"
     },
     {
       id:'3',
       name:"이효용",
-      email:"구글"
+      email:"구글",
+      active:"false"
     }
   ]);
 
@@ -60,6 +63,14 @@ function App() {
     ));
   }
 
+  const onToggle = (id) => {
+    setUsers(
+      users.map(user =>
+        user.id === id ? {...user, active:!user.active} : user
+      )
+    );
+  };
+
   return (
     <>
       <CreateUser
@@ -68,7 +79,7 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} onRemove={onRemove}/>
+      <UserList users={users} onRemove={onRemove} onToggle={onToggle}/>
     </>
   );
 }
