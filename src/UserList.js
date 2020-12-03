@@ -15,6 +15,7 @@ function User({user, onRemove, onToggle}){
       >
         {user.name}
       </b>
+      &nbsp;
       <span>{user.email}</span>
       <button onClick={() => onRemove(user.id)}>삭제</button>
     </div>
